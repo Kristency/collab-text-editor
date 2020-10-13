@@ -15,7 +15,7 @@ function App() {
   const query = useQuery();
 
   useEffect(() => {
-    socket = io('http://localhost:8080', {
+    socket = io('https://collab-editor-api.herokuapp.com', {
       transports: ['websocket']
     });
     socket.emit('join-editor', query.get('editorId'));
