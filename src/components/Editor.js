@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SocketIO from 'socket.io-client';
 import { useLocation } from 'react-router-dom';
 import { Box, Chip, Tooltip, Typography } from '@material-ui/core';
@@ -17,7 +17,7 @@ function App() {
   useEffect(() => {
     socket = SocketIO('https://collab-editor-api.herokuapp.com/');
     socket.emit('join-editor', query.get('editorId'));
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onTextChange = (newText) => {
     socket.emit('send-text', newText);
