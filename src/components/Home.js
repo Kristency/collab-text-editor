@@ -10,6 +10,7 @@ import {
   DialogContentText
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 function Home() {
   const [name, setName] = useState('');
@@ -21,7 +22,7 @@ function Home() {
   const onSubmitClick = () => {
     if (isNewEditor) {
       if (name) {
-        history.push('/editor');
+        history.push(`/editor?name=${name}&editorId=${uuidv4()}`);
       }
     } else {
       if (name && editorId) {
