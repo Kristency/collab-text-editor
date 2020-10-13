@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import SocketIO from 'socket.io-client';
+import io from 'socket.io-client';
 import { useLocation } from 'react-router-dom';
 import { Box, Chip, Tooltip, Typography } from '@material-ui/core';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
@@ -15,11 +15,14 @@ function App() {
   const query = useQuery();
 
   useEffect(() => {
-    socket = SocketIO('https://collab-editor-api.herokuapp.com/');
+    socket = io('http://localhost:8080', {
+      transports: ['websocket']
+    });
     socket.emit('join-editor', query.get('editorId'));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onTextChange = (newText) => {
+    setText(newText);
     socket.emit('send-text', newText);
   };
 
