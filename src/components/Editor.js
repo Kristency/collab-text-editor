@@ -58,11 +58,11 @@ function App() {
 
   const onTextChange = (newText) => {
     setText(newText);
-    socket.emit('send-text', newText);
+    socket.emit('editor-state', newText);
   };
 
   useEffect(() => {
-    socket.on('receive-text', (data) => {
+    socket.on('editor-state', (data) => {
       setText(data);
     });
   }, [text]);
