@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import { useLocation } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
+  Grid,
+  Paper,
   Chip,
   Tooltip,
   Typography,
@@ -22,6 +25,16 @@ let socket = null;
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };
+
+const useStyles = makeStyles((theme) => ({
+  // root: {
+  //   flexGrow: 1
+  // },
+  paper: {
+    maxWidth: 400,
+    marginTop: '40px'
+  }
+}));
 
 function App() {
   const [text, setText] = useState('');
@@ -64,6 +77,8 @@ function App() {
     });
   }, [users, snackbarState]);
 
+  const classes = useStyles();
+
   return (
     <>
       <Box mx={3} my={3}>
@@ -77,34 +92,42 @@ function App() {
           }
           onDelete={() => navigator.clipboard.writeText(query.get('editorId'))}
         />
-        <List>
-          {users.map((user) => (
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar>
-                  <FolderIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary={user.username} />
-            </ListItem>
-          ))}
-        </List>
-        {/* <div>
-        <textarea
-          rows="20"
-          cols="100"
-          id="editor"
-          style={{
-            backgroundColor: 'dimgrey',
-            color: 'white',
-            fontSize: '15px',
-            marginTop: '40px'
-          }}
-          placeholder="Type Your Text..."
-          onChange={(e) => onTextChange(e.target.value)}
-          value={text}
-        ></textarea>
-      </div> */}
+        <Grid container spacing={2}>
+          <Grid item xs={5}>
+            <Paper className={classes.paper}>
+              <List>
+                {users.map((user) => (
+                  <ListItem key={user.id}>
+                    <ListItemAvatar>
+                      <Avatar>
+                        <FolderIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary={user.username} />
+                  </ListItem>
+                ))}
+              </List>
+            </Paper>
+          </Grid>
+          <Grid item xs={7}>
+            <div>
+              <textarea
+                rows="20"
+                cols="100"
+                id="editor"
+                style={{
+                  backgroundColor: 'dimgrey',
+                  color: 'white',
+                  fontSize: '15px',
+                  marginTop: '40px'
+                }}
+                placeholder="Type Your Text..."
+                onChange={(e) => onTextChange(e.target.value)}
+                value={text}
+              ></textarea>
+            </div>
+          </Grid>
+        </Grid>
       </Box>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
